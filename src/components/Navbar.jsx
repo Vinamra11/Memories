@@ -18,7 +18,7 @@ export default () => {
                         <Nav.Link to="/" as={Link}>Products</Nav.Link>
                     </Nav>
                     <Nav className="justify-content-end">
-                        <Nav.Link to="/cart" as={Link}>My Cart {cart.length}</Nav.Link>
+                        <Nav.Link to="/cart" as={Link}>My Cart {cart?.length}</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </Container>
