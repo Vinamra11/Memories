@@ -2,8 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Provider } from 'react-redux'
 
-import { ApiProvider } from '@reduxjs/toolkit/dist/query/react'
-import { cartApi } from './services/apiSlice'
+// requires ApiProvider if no store is configured
 
 import store from './app/store'
 import Navbar from './components/Navbar'
@@ -14,7 +13,6 @@ function App() {
 
   return (
     <BrowserRouter>
-      {/* <ApiProvider api={cartApi}> */}
       <Provider store={store}>
         <Navbar />
         <Routes>
@@ -22,7 +20,6 @@ function App() {
           <Route path='/cart' element={<Cart />} />
         </Routes>
       </Provider>
-      {/* </ApiProvider> */}
     </BrowserRouter>
   )
 }

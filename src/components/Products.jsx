@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Spinner from 'react-bootstrap/Spinner'
-import Alert from 'react-bootstrap/Alert';
+import Alert from 'react-bootstrap/Alert'
 
 
 
@@ -11,6 +11,7 @@ import ProdCard from './ProdCard'
 import STATUS from '../constants/status'
 
 function Products() {
+
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -35,7 +36,7 @@ function Products() {
 
     if (status === STATUS.LOADING) {
         return (
-            <div className='row align-items-center justify-content-center' style={{ minHeight: "100vh" }}>
+            <div className='row align-items-center justify-content-center' style={{ minHeight: "80vh" }}>
                 <Spinner animation="border" role="status" className='col-md-12'>
                     <span className="visually-hidden">Loading...</span>
                 </Spinner>

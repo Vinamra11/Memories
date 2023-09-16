@@ -1,44 +1,37 @@
 import { useDispatch, useSelector } from 'react-redux'
 
-import { add, remove, inc, dec } from '../store/cartSlice'
+// import { add, remove, inc, dec } from '../store/cartSlice'
+import { useAddToCartMutation, useUpdateCartMutation, useDeleteFromCartMutation, useGetCartQuery } from '../services/apiSlice'
 
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 
 function ProdCard({ product, onCart }) {
 
-    const dispatch = useDispatch()
-
-    const addToCart = (product) => {
-        dispatch(add({
-            ...product,
-            quantity: 1
-        }))
-    }
-
-    const removeFromCart = (product) => {
-        dispatch(remove(product))
-    }
+    const { data: cart } = useGetCartQuery()
+    const [addToCart, result1] = useAddToCartMutation()
+    const [updateCart, result2] = useUpdateCartMutation()
+    const [deleteFromCart, result3] = useDeleteFromCartMutation()
 
     const incQunatity = (product) => {
-        dispatch(inc(product))
+        updateCart({ ...product, quantity: product.quantity + 1 })
     }
 
     const decQunatity = (product) => {
-        if (product.quantity === 1) dispatch(remove(product))
-        else dispatch(dec(product))
+        if (product.quantity === 1) deleteFromCart(product)
+        else updateCart({ ...product, quantity: product.quantity - 1 })
     }
 
-
-    // to update quantity from product page
-    const cart = useSelector(state => state.cart)
+    // to inc dec quantity from products page
     let cartIndex, inCart, prodFromCart
-    if (cart.length > 0) cartIndex = cart.findIndex(item => item.id === product.id)
+    if (cart?.length > 0) cartIndex = cart?.findIndex(item => item.id === product.id)
     if (cartIndex != undefined && cartIndex !== -1) {
         inCart = true
         prodFromCart = cart[cartIndex]
     } else inCart = false
-    // console.log(cart.map(item => item.id), product.id, cartIndex, inCart)
+    // console.log(cart?.map(item => item.id), product.id, cartIndex, inCart)
+
+    // console.log(result1, result2, result3) // for checking Mutauion Results
 
     const content = (
         <Card style={{ width: '18rem', margin: '5px 0' }} className='col-md-3'>
@@ -70,7 +63,7 @@ function ProdCard({ product, onCart }) {
             <Card.Footer style={{ background: '#fff' }} className='text-center'>
                 {
                     (onCart ?
-                        <Button variant="danger" onClick={() => removeFromCart(product)}>Remove Item</Button> :
+                        <Button variant="danger" onClick={() => deleteFromCart(product)}>Remove Item</Button> :
                         (
                             inCart ? (
                                 <div className="text-center">
@@ -80,7 +73,7 @@ function ProdCard({ product, onCart }) {
                                         <button type="button" className="btn btn-primary" onClick={() => incQunatity(prodFromCart)}>+</button>
                                     </div>
                                 </div>
-                            ) : <Button variant="primary" onClick={() => addToCart(product)}>Add To Cart</Button>
+                            ) : <Button variant="primary" onClick={() => addToCart({ ...product, quantity: 1 })}>Add To Cart</Button>
                         )
                     )}
             </Card.Footer>
